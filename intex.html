@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Репетитор русского языка - Елена Субочева</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Фон с градиентом */
+        .hero {
+            background: linear-gradient(135deg, #FF6B9D 0%, #FFA500 25%, #FFD700 50%, #FF6B9D 100%);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Декоративные фигуры */
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+        }
+
+        .shape1 {
+            width: 300px;
+            height: 300px;
+            background: white;
+            top: -100px;
+            left: -100px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape2 {
+            width: 200px;
+            height: 200px;
+            background: white;
+            bottom: -50px;
+            right: -50px;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(30px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            color: white;
+            animation: slideIn 1s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: 4em;
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 10px rgba(0,0,0,0.3);
+            font-weight: 800;
+        }
+
+        .hero p {
+            font-size: 1.8em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: white;
+            color: #FF6B9D;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        /* Секции */
+        section {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .about {
+            background: linear-gradient(135deg, #FFE5EC 0%, #FFF9E6 100%);
+        }
+
+        .about h2, .services h2, .contact h2 {
+            font-size: 2.5em;
+            margin-bottom: 40px;
+            color: #FF6B9D;
+            text-align: center;
+            position: relative;
+        }
+
+        .about h2::after, .services h2::after, .contact h2::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #FF6B9D, #FFA500);
+            margin: 20px auto 0;
+        }
+
+        .about-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(255, 107, 157, 0.1);
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+
+        .services {
+            background: linear-gradient(135deg, #E5F3FF 0%, #F0EBFF 100%);
+        }
+
+        .service-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border-top: 5px solid #FF6B9D;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(255, 107, 157, 0.2);
+        }
+
+        .card h3 {
+            font-size: 1.5em;
+            color: #FF6B9D;
+            margin-bottom: 15px;
+        }
+
+        .card-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .contact {
+            background: linear-gradient(135deg, #FFE5EC 0%, #FFF9E6 100%);
+        }
+
+        .contact-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .contact-info {
+            margin: 20px 0;
+            font-size: 1.2em;
+        }
+
+        .contact-info a {
+            color: #FF6B9D;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .contact-info a:hover {
+            text-decoration: underline;
+            color: #FFA500;
+        }
+
+        .social-links {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #FF6B9D, #FFA500);
+            color: white;
+            border-radius: 50%;
+            font-size: 1.5em;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            transform: scale(1.2) rotate(10deg);
+        }
+
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5em;
+            }
+
+            .hero p {
+                font-size: 1.3em;
+            }
+
+            section {
+                padding: 60px 15px;
+            }
+
+            .about h2, .services h2, .contact h2 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <div class="shape shape1"></div>
+        <div class="shape shape2"></div>
+        <div class="hero-content">
+            <h1>🎓 Елена Субочева</h1>
+            <p>Репетитор русского языка</p>
+            <p style="font-size: 1.3em;">Помогу полюбить русский язык!</p>
+            <a href="#contact" class="btn">Записаться на урок</a>
+        </div>
+    </div>
+
+    <section class="about" id="about">
+        <h2>💫 Обо мне</h2>
+        <div class="about-content">
+            <p>Привет! Я Елена Дмитриевна, учитель русского языка с 30-летним опытом работы. Я верю, что каждый ученик уникален и нуждается в персональном подходе.</p>
+            <p style="margin-top: 20px;">Мои уроки — это не скучные таблицы и правила, а увлекательные занятия, на которых мы вместе исследуем красоту русского языка, обсуждаем интересные тексты и развиваем речь.</p>
+            <p style="margin-top: 20px;">Я специализируюсь как на подготовке к экзаменам, так и на развитии навыков свободного общения. Мои ученики не только улучшат оценки, но и полюбят русский язык! 🌟</p>
+        </div>
+    </section>
+
+    <section class="services" id="services">
+        <h2>✨ Мои услуги</h2>
+        <div class="service-cards">
+            <div class="card">
+                <div class="card-icon">📚</div>
+                <h3>Подготовка к ОГЭ</h3>
+                <p>Интенсивная подготовка к государственному экзамену с разбором всех типов заданий</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🎯</div>
+                <h3>Подготовка к ЕГЭ</h3>
+                <p>Углубленная работа над сочинениями и анализом текстов</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🌍</div>          
+            </div>
+            <div class="card">
+                <div class="card-icon">🎨</div>
+                <h3>Развитие речи</h3>
+                <p>Помощь в преодолении речевых трудностей</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">📖</div>
+                <h3>Литература</h3>
+                <p>Анализ произведений и подготовка к итоговому сочинению</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">💬</div>
+                <h3>Коррекция ошибок</h3>
+                <p>Помощь с орфографией, пунктацией и грамматикой</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <h2>📞 Контакты</h2>
+        <div class="contact-content">
+            <p style="font-size: 1.3em; margin-bottom: 30px; color: #FF6B9D; font-weight: bold;">Готовы начать обучение?</p>
+            
+            <div class="contact-info">
+                <strong>📱 Телефон:</strong><br>
+                <a href="tel:+79154598603"</a>
+            </div>
+
+            <div class="">
+                <strong>✉️ Email:</elenadmitr07@mail.ru><br>
+                <a href="mailto:irina@example.com">irina@example.com</a>
+            </div>
+
+            <div class="contact-info">
+                <strong>📍 Место проведения:</strong><br>
+                <p>Онлайн уроки и очные занятия у меня дома</p>
+            </div>
+
+            <p style="margin-top: 30px; color: #666; ☀️</p>
+
+            <div class="social-links">
+                <a href="#" title="Telegram">📲</a>
+                <a href="#" title="WhatsApp">💬</a>
+                <a href="#" title="VK">👥</a>
+                <a href="#" title="Instagram">📸</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Елена Субочева. Все права защищены. | Репетитор русского языка</p>
+    </footer>
+</body>
+</html>
