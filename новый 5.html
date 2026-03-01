@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev Products Store</title>
+    <style>
+        /* ============================================
+           MAIN SITE STYLES
+           You can change colors, fonts, and spacing here
+           ============================================ */
+        :root {
+            --primary-color: #2563eb;        /* Main blue color */
+            --primary-hover: #1d4ed8;        /* Hover color */
+            --background-color: #f3f4f6;     /* Page background color */
+            --card-background: #ffffff;      /* Card background color */
+            --text-primary: #1f2937;         /* Main text color */
+            --text-secondary: #6b7280;       /* Secondary text color */
+            --price-color: #059669;          /* Price color (green) */
+            --border-radius: 12px;           /* Border radius */
+            --shadow: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-hover: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* ============================================
+           SITE HEADER
+           Change title and description here
+           ============================================ */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), #7c3aed);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* ============================================
+           PRODUCTS CONTAINER
+           ============================================ */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+        }
+
+        /* ============================================
+           PRODUCT CARDS GRID
+           ============================================ */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        /* ============================================
+           PRODUCT CARD
+           ============================================ */
+        .product-card {
+            background: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background-color: #e5e7eb;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .product-description {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--price-color);
+            margin-bottom: 15px;
+        }
+
+        .buy-button {
+            width: 100%;
+            padding: 12px 24px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .buy-button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* ============================================
+           MODAL WINDOW
+           ============================================ */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--card-background);
+            border-radius: var(--border-radius);
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            background: rgba(0,0,0,0.1);
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 10;
+            transition: background-color 0.3s;
+        }
+
+        .modal-close:hover {
+            background: rgba(0,0,0,0.2);
+        }
+
+        .modal-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        /* ============================================
+           IMAGE CAROUSEL
+           ============================================ */
+        .carousel-container {
+            position: relative;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            background: #e5e7eb;
+        }
+
+        .carousel-slide {
+            display: none;
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+
+        .carousel-slide.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0.5; }
+            to { opacity: 1; }
+        }
+
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.9);
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel-nav:hover {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .carousel-prev {
+            left: 15px;
+        }
+
+        .carousel-next {
+            right: 15px;
+        }
+
+        .carousel-dots {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+        }
+
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .carousel-dot.active {
+            background: white;
+            transform: scale(1.2);
+        }
+
+        /* ============================================
+           PRODUCT INFO IN MODAL
+           ============================================ */
+        .modal-product-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .modal-product-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        .modal-product-price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--price-color);
+            margin-bottom: 20px;
+        }
+
+        .modal-product-description {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .modal-buy-button {
+            padding: 15px 30px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            align-self: flex-start;
+        }
+
+        .modal-buy-button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* ============================================
+           MOBILE RESPONSIVENESS
+           ============================================ */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-body {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+
+            .carousel-slide {
+                height: 250px;
+            }
+
+            .modal-product-title {
+                font-size: 1.4rem;
+            }
+
+            .modal-product-price {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================
+         SITE HEADER
+         Change title and description here
+         ============================================ -->
+    <header>
+        <h1>💻 Dev Products Store</h1>
+        <p>Quality software solutions for your business</p>
+    </header>
+
+    <!-- ============================================
+         MAIN CONTENT
+         ============================================ -->
+    <div class="container">
+        <!-- Product grid will be filled via JavaScript -->
+        <div class="products-grid" id="productsGrid"></div>
+    </div>
+
+    <!-- ============================================
+         MODAL WINDOW
+         Do not change structure, only styles above
+         ============================================ -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <div class="modal-body">
+                <!-- Left side: Image Carousel -->
+                <div class="carousel-container">
+                    <button class="carousel-nav carousel-prev" onclick="changeSlide(-1)">❮</button>
+                    <div id="carouselSlides"></div>
+                    <button class="carousel-nav carousel-next" onclick="changeSlide(1)">❯</button>
+                    <div class="carousel-dots" id="carouselDots"></div>
+                </div>
+
+                <!-- Right side: Product Information -->
+                <div class="modal-product-info">
+                    <h2 class="modal-product-title" id="modalTitle"></h2>
+                    <div class="modal-product-price" id="modalPrice"></div>
+                    <div class="modal-product-description" id="modalDescription"></div>
+                    <button class="modal-buy-button" id="modalBuyButton">🛒 Buy Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         JAVASCRIPT
+         All site logic is here
+         ============================================ -->
+    <script>
+        // ============================================
+        // PRODUCTS LIST
+        // Add or modify products in this array
+        // Each product needs: id, title, shortDescription, fullDescription, price, images (array), buyLink
+        // ============================================
+        const products = [
+            {
+                id: 1,
+                title: "Project Management System",
+                shortDescription: "Full-featured CRM for managing tasks and clients",
+                fullDescription: "Powerful project management system with task tracking, team management, and client handling. Includes dashboards, reports, event calendar, and integration with popular services. Perfect for small and medium development teams.",
+                price: "$500",
+                // Array of image URLs for carousel
+                images: [
+                    "https://image.qwenlm.ai/public_source/4a7b37b8-d294-42b7-a9fd-90c0726485ed/1df592ad1-8775-49ae-89b3-955a601306fb.png",
+                    "https://image.qwenlm.ai/public_source/4a7b37b8-d294-42b7-a9fd-90c0726485ed/1b1804393-c515-48bb-ab8a-cdb64c51173e.png"
+                ],
+                // Purchase link (Telegram, email, payment form, etc.)
+                buyLink: "https://t.me/your_contact"
+            },
+            {
+                id: 2,
+                title: "Mobile Delivery App",
+                shortDescription: "Ready-made solution for food and goods delivery service",
+                fullDescription: "Complete mobile application for iOS and Android with admin panel, courier app, and customer app. Includes real-time order tracking, map integration, and payment systems. Fully ready to launch.",
+                price: "$1,500",
+                images: [
+                    "https://image.qwenlm.ai/public_source/4a7b37b8-d294-42b7-a9fd-90c0726485ed/19b690f2a-0764-4e27-8ef1-91b5e4e2100e.png",
+                    "https://image.qwenlm.ai/public_source/4a7b37b8-d294-42b7-a9fd-90c0726485ed/1df592ad1-8775-49ae-89b3-955a601306fb.png"
+                ],
+                buyLink: "https://t.me/your_contact"
+            },
+            {
+                id: 3,
+                title: "E-commerce Platform",
+                shortDescription: "Ready-made online shopping platform with admin panel",
+                fullDescription: "Full-featured online store with product catalog, shopping cart, payment and delivery system. Includes admin panel for managing products, orders, and customers. Support for multiple categories, filters, promotions, and discounts. SEO optimized.",
+                price: "$1,000",
+                images: [
+                    "https://image.qwenlm.ai/public_source/4a7b37b8-d294-42b7-a9fd-90c0726485ed/1b1804393-c515-48bb-ab8a-cdb64c51173e.png",
+                    "https://image.qwenlm.ai/public_source/4a7b37b8-d294-42b7-a9fd-90c0726485ed/19b690f2a-0764-4e27-8ef1-91b5e4e2100e.png"
+                ],
+                buyLink: "https://t.me/your_contact"
+            },
+            {
+                id: 4,
+                title: "Telegram Chat Bot",
+                shortDescription: "Customer communication automation via Telegram",
+                fullDescription: "Smart Telegram chat bot with menu support, buttons, payments, and external API integration. Can be used for customer support, order taking, surveys, and more. Easy to customize for your needs.",
+                price: "$300",
+                images: [
+                    "https://image.qwenlm.ai/public_source/4a7b37b8-d294-42b7-a9fd-90c0726485ed/1df592ad1-8775-49ae-89b3-955a601306fb.png"
+                ],
+                buyLink: "https://t.me/your_contact"
+            },
+            {
+                id: 5,
+                title: "Business Landing Page",
+                shortDescription: "Modern landing page for your business presentation",
+                fullDescription: "Beautiful and functional business landing page with responsive design. Includes sections: about company, services, portfolio, testimonials, contacts. Optimized for search engines and fast loading. Easy to edit content.",
+                price: "$400",
+                images: [
+                    "https://image.qwenlm.ai/public_source/4a7b37b8-d294-42b7-a9fd-90c0726485ed/1b1804393-c515-48bb-ab8a-cdb64c51173e.png"
+                ],
+                buyLink: "https://t.me/your_contact"
+            },
+            {
+                id: 6,
+                title: "Data Analytics System",
+                shortDescription: "Dashboards and reports for business analytics",
+                fullDescription: "Professional system for collecting, processing, and visualizing data. Includes customizable dashboards, automatic reports, export to various formats. Integration with popular data sources: databases, APIs, CSV/Excel files.",
+                price: "$800",
+                images: [
+                    "https://image.qwenlm.ai/public_source/4a7b37b8-d294-42b7-a9fd-90c0726485ed/1b1804393-c515-48bb-ab8a-cdb64c51173e.png",
+                    "https://image.qwenlm.ai/public_source/4a7b37b8-d294-42b7-a9fd-90c0726485ed/1df592ad1-8775-49ae-89b3-955a601306fb.png"
+                ],
+                buyLink: "https://t.me/your_contact"
+            }
+        ];
+
+        // ============================================
+        // GLOBAL VARIABLES
+        // ============================================
+        let currentProduct = null;
+        let currentSlideIndex = 0;
+
+        // ============================================
+        // FUNCTION TO RENDER PRODUCT CARDS
+        // ============================================
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = '';
+
+            products.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                
+                // Use first image from array for card
+                const mainImage = product.images[0] || 'https://via.placeholder.com/400x300?text=No+Image';
+
+                card.innerHTML = `
+                    <img src="${mainImage}" alt="${product.title}" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">${product.title}</h3>
+                        <p class="product-description">${product.shortDescription}</p>
+                        <div class="product-price">${product.price}</div>
+                        <button class="buy-button" onclick="openModal(${product.id})">
+                            🛒 Buy Now
+                        </button>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        // ============================================
+        // FUNCTION TO OPEN MODAL WINDOW
+        // ============================================
+        function openModal(productId) {
+            // Find product by ID
+            currentProduct = products.find(p => p.id === productId);
+            if (!currentProduct) return;
+
+            // Fill data in modal
+            document.getElementById('modalTitle').textContent = currentProduct.title;
+            document.getElementById('modalPrice').textContent = currentProduct.price;
+            document.getElementById('modalDescription').textContent = currentProduct.fullDescription;
+
+            // Configure buy button
+            const buyButton = document.getElementById('modalBuyButton');
+            buyButton.onclick = function() {
+                // Go to purchase link
+                if (currentProduct.buyLink) {
+                    window.open(currentProduct.buyLink, '_blank');
+                } else {
+                    alert('Purchase link is not configured!');
+                }
+            };
+
+            // Initialize carousel
+            currentSlideIndex = 0;
+            renderCarousel();
+
+            // Show modal
+            document.getElementById('modalOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden'; // Block page scroll
+        }
+
+        // ============================================
+        // FUNCTION TO CLOSE MODAL WINDOW
+        // ============================================
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+            document.body.style.overflow = 'auto'; // Restore scroll
+        }
+
+        // Close when clicking outside modal content
+        document.getElementById('modalOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Close with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // ============================================
+        // FUNCTION TO RENDER CAROUSEL
+        // ============================================
+        function renderCarousel() {
+            const slidesContainer = document.getElementById('carouselSlides');
+            const dotsContainer = document.getElementById('carouselDots');
+            
+            slidesContainer.innerHTML = '';
+            dotsContainer.innerHTML = '';
+
+            if (!currentProduct || !currentProduct.images || currentProduct.images.length === 0) {
+                // If no images, show placeholder
+                slidesContainer.innerHTML = '<div class="carousel-slide active" style="display:block;background:#e5e7eb;display:flex;align-items:center;justify-content:center;color:#6b7280;">No images available</div>';
+                return;
+            }
+
+            // Create slides
+            currentProduct.images.forEach((imageSrc, index) => {
+                const slide = document.createElement('img');
+                slide.src = imageSrc;
+                slide.alt = currentProduct.title;
+                slide.className = `carousel-slide ${index === 0 ? 'active' : ''}`;
+                slidesContainer.appendChild(slide);
+
+                // Create navigation dots
+                const dot = document.createElement('div');
+                dot.className = `carousel-dot ${index === 0 ? 'active' : ''}`;
+                dot.onclick = () => goToSlide(index);
+                dotsContainer.appendChild(dot);
+            });
+        }
+
+        // ============================================
+        // FUNCTION TO CHANGE SLIDES
+        // ============================================
+        function changeSlide(direction) {
+            if (!currentProduct || !currentProduct.images || currentProduct.images.length <= 1) return;
+
+            const slides = document.querySelectorAll('.carousel-slide');
+            const dots = document.querySelectorAll('.carousel-dot');
+
+            // Remove active class
+            slides[currentSlideIndex].classList.remove('active');
+            dots[currentSlideIndex].classList.remove('active');
+
+            // Calculate new index
+            currentSlideIndex += direction;
+            if (currentSlideIndex >= slides.length) {
+                currentSlideIndex = 0;
+            } else if (currentSlideIndex < 0) {
+                currentSlideIndex = slides.length - 1;
+            }
+
+            // Add active class
+            slides[currentSlideIndex].classList.add('active');
+            dots[currentSlideIndex].classList.add('active');
+        }
+
+        // ============================================
+        // FUNCTION TO GO TO SPECIFIC SLIDE
+        // ============================================
+        function goToSlide(index) {
+            if (!currentProduct || !currentProduct.images) return;
+
+            const slides = document.querySelectorAll('.carousel-slide');
+            const dots = document.querySelectorAll('.carousel-dot');
+
+            slides[currentSlideIndex].classList.remove('active');
+            dots[currentSlideIndex].classList.remove('active');
+
+            currentSlideIndex = index;
+
+            slides[currentSlideIndex].classList.add('active');
+            dots[currentSlideIndex].classList.add('active');
+        }
+
+        // ============================================
+        // INITIALIZATION ON PAGE LOAD
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            renderProducts();
+        });
+    </script>
+</body>
+</html>
+
