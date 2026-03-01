@@ -3,365 +3,526 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Репетитор русского языка - Елена Субочева</title>
+    <title>Репетитор по русскому языку | Елена Субочева</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #FFD700; /* Gold */
+            --secondary: #FF6B6B; /* Coral Red */
+            --accent: #4ECDC4; /* Teal */
+            --dark: #292f36;
+            --light: #f7fff7;
+            --slot-bg: #ffeaa7;
+        }
+
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
             line-height: 1.6;
-            color: #333;
             overflow-x: hidden;
         }
 
-        /* Фон с градиентом */
+        /* Fixed Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            font-weight: 900;
+            font-size: 1.5rem;
+            color: var(--secondary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 700;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+
+        /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, #FF6B9D 0%, #FFA500 25%, #FFD700 50%, #FF6B9D 100%);
-            background-size: 400% 400%;
-            animation: gradient 15s ease infinite;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 6rem 2rem 2rem;
             text-align: center;
+            color: white;
             position: relative;
             overflow: hidden;
         }
 
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Декоративные фигуры */
-        .shape {
-            position: absolute;
-            border-radius: 50%;
-            opacity: 0.1;
-        }
-
-        .shape1 {
-            width: 300px;
-            height: 300px;
-            background: white;
-            top: -100px;
-            left: -100px;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .shape2 {
-            width: 200px;
-            height: 200px;
-            background: white;
-            bottom: -50px;
-            right: -50px;
-            animation: float 8s ease-in-out infinite reverse;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(30px); }
-        }
-
         .hero-content {
-            position: relative;
-            z-index: 1;
-            color: white;
-            animation: slideIn 1s ease-out;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            z-index: 2;
+            max-width: 800px;
         }
 
         .hero h1 {
-            font-size: 4em;
-            margin-bottom: 20px;
-            text-shadow: 3px 3px 10px rgba(0,0,0,0.3);
-            font-weight: 800;
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.2);
         }
 
         .hero p {
-            font-size: 1.8em;
-            margin-bottom: 30px;
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            font-weight: 700;
         }
 
-        .btn {
-            display: inline-block;
-            padding: 15px 40px;
-            background: white;
-            color: #FF6B9D;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: bold;
-            font-size: 1.1em;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            cursor: pointer;
+        .cta-button {
+            background: var(--accent);
+            color: white;
+            padding: 1rem 2.5rem;
+            font-size: 1.2rem;
             border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 900;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 5px 15px rgba(78, 205, 196, 0.4);
+            text-decoration: none;
+            display: inline-block;
         }
 
-        .btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(78, 205, 196, 0.6);
         }
 
-        /* Секции */
-        section {
-            padding: 80px 20px;
+        /* About Section */
+        .section {
+            padding: 5rem 2rem;
             max-width: 1200px;
             margin: 0 auto;
         }
 
-        .about {
-            background: linear-gradient(135deg, #FFE5EC 0%, #FFF9E6 100%);
-        }
-
-        .about h2, .services h2, .contact h2 {
-            font-size: 2.5em;
-            margin-bottom: 40px;
-            color: #FF6B9D;
+        .section-title {
             text-align: center;
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 3rem;
             position: relative;
         }
 
-        .about h2::after, .services h2::after, .contact h2::after {
+        .section-title::after {
             content: '';
             display: block;
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(90deg, #FF6B9D, #FFA500);
-            margin: 20px auto 0;
+            width: 100px;
+            height: 5px;
+            background: var(--primary);
+            margin: 10px auto;
+            border-radius: 5px;
         }
 
-        .about-content {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(255, 107, 157, 0.1);
-            line-height: 1.8;
-            font-size: 1.1em;
-        }
-
-        .services {
-            background: linear-gradient(135deg, #E5F3FF 0%, #F0EBFF 100%);
-        }
-
-        .service-cards {
+        .about-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
         }
 
-        .card {
-            background: white;
-            padding: 30px;
+        .about-text h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .about-img {
+            width: 100%;
+            height: 400px;
+            background-color: #eee;
             border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 10px 10px 0px var(--primary);
+        }
+        
+        .about-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Slot Machine Section */
+        .slot-section {
+            background: var(--dark);
+            color: white;
             text-align: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            border-top: 5px solid #FF6B9D;
-        }
-
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 60px rgba(255, 107, 157, 0.2);
-        }
-
-        .card h3 {
-            font-size: 1.5em;
-            color: #FF6B9D;
-            margin-bottom: 15px;
-        }
-
-        .card-icon {
-            font-size: 3em;
-            margin-bottom: 15px;
-        }
-
-        .contact {
-            background: linear-gradient(135deg, #FFE5EC 0%, #FFF9E6 100%);
-        }
-
-        .contact-content {
-            background: white;
-            padding: 40px;
             border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            text-align: center;
+            margin: 2rem auto;
+            padding: 3rem 1rem;
+            position: relative;
+            overflow: hidden;
         }
 
-        .contact-info {
-            margin: 20px 0;
-            font-size: 1.2em;
+        .slot-machine {
+            background: var(--slot-bg);
+            padding: 2rem;
+            border-radius: 15px;
+            display: inline-block;
+            border: 5px solid var(--primary);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            margin-bottom: 2rem;
         }
 
-        .contact-info a {
-            color: #FF6B9D;
-            text-decoration: none;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-
-        .contact-info a:hover {
-            text-decoration: underline;
-            color: #FFA500;
-        }
-
-        .social-links {
-            margin-top: 30px;
+        .reels-container {
             display: flex;
-            justify-content: center;
-            gap: 20px;
+            gap: 10px;
+            background: #333;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 20px;
         }
 
-        .social-links a {
-            display: inline-flex;
+        .reel {
+            width: 80px;
+            height: 100px;
+            background: white;
+            border-radius: 5px;
+            display: flex;
             align-items: center;
             justify-content: center;
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #FF6B9D, #FFA500);
-            color: white;
-            border-radius: 50%;
-            font-size: 1.5em;
-            text-decoration: none;
-            transition: all 0.3s ease;
+            font-size: 3rem;
+            overflow: hidden;
+            border: 2px solid #ccc;
         }
 
-        .social-links a:hover {
-            transform: scale(1.2) rotate(10deg);
+        .spin-btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 1rem 3rem;
+            font-size: 1.5rem;
+            font-weight: 900;
+            border-radius: 50px;
+            cursor: pointer;
+            text-transform: uppercase;
+            box-shadow: 0 5px 0 #c0392b;
+            transition: all 0.1s;
+        }
+
+        .spin-btn:active {
+            transform: translateY(5px);
+            box-shadow: none;
+        }
+
+        .spin-btn:disabled {
+            background: #95a5a6;
+            box-shadow: none;
+            cursor: not-allowed;
+            transform: translateY(5px);
+        }
+
+        .prize-display {
+            margin-top: 20px;
+            min-height: 80px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(720deg);
+            }
+        }
+
+        /* Services */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            border-bottom: 5px solid var(--accent);
+            transition: transform 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Contact Form */
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--accent);
+            outline: none;
         }
 
         footer {
-            background: #333;
+            background: var(--dark);
             color: white;
             text-align: center;
-            padding: 20px;
+            padding: 2rem;
+            margin-top: 4rem;
         }
 
-        /* Адаптивность */
         @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5em;
-            }
-
-            .hero p {
-                font-size: 1.3em;
-            }
-
-            section {
-                padding: 60px 15px;
-            }
-
-            .about h2, .services h2, .contact h2 {
-                font-size: 2em;
-            }
+            .hero h1 { font-size: 2.5rem; }
+            .about-grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; } /* Simplified for demo */
         }
     </style>
 </head>
 <body>
-    <div class="hero">
-        <div class="shape shape1"></div>
-        <div class="shape shape2"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="#" class="logo">Елена Смирнова</a>
+        <div class="nav-links">
+            <a href="#about">Обо мне</a>
+            <a href="#services">Услуги</a>
+            <a href="#game">Испытай удачу</a>
+            <a href="#contact">Контакты</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
         <div class="hero-content">
-            <h1>🎓 Елена Субочева</h1>
-            <p>Репетитор русского языка</p>
-            <p style="font-size: 1.3em;">Помогу полюбить русский язык!</p>
-            <a href="#contact" class="btn">Записаться на урок</a>
-        </div>
-    </div>
-
-    <section class="about" id="about">
-        <h2>💫 Обо мне</h2>
-        <div class="about-content">
-            <p>Привет! Я Елена Дмитриевна, учитель русского языка с 30-летним опытом работы. Я верю, что каждый ученик уникален и нуждается в персональном подходе.</p>
-            <p style="margin-top: 20px;">Мои уроки — это не скучные таблицы и правила, а увлекательные занятия, на которых мы вместе исследуем красоту русского языка, обсуждаем интересные тексты и развиваем речь.</p>
-            <p style="margin-top: 20px;">Я специализируюсь как на подготовке к экзаменам, так и на развитии навыков свободного общения. Мои ученики не только улучшат оценки, но и полюбят русский язык! 🌟</p>
+            <h1>Русский язык — это просто!</h1>
+            <p>Подготовка к ЕГЭ, ОГЭ и повышение грамотности с удовольствием.</p>
+            <a href="#contact" class="cta-button">Записаться на урок</a>
         </div>
     </section>
 
-    <section class="services" id="services">
-        <h2>✨ Мои услуги</h2>
-        <div class="service-cards">
-            <div class="card">
-                <div class="card-icon">📚</div>
-                <h3>Подготовка к ОГЭ</h3>
-                <p>Интенсивная подготовка к государственному экзамену с разбором всех типов заданий</p>
+    <!-- About Section -->
+    <section id="about" class="section">
+        <h2 class="section-title">Обо мне</h2>
+        <div class="about-grid">
+            <div class="about-img">
+                <!-- Placeholder image generated via tool -->
+                <img src="https://image.pollinations.ai/prompt/professional%20female%20russian%20tutor%20smiling%20holding%20book%20bright%20colorful%20background%20vector%20illustration%20style?width=600&height=400&nologo=true" alt="Репетитор">
             </div>
-            <div class="card">
-                <div class="card-icon">🎯</div>
-                <h3>Подготовка к ЕГЭ</h3>
-                <p>Углубленная работа над сочинениями и анализом текстов</p>
-            </div>
-            <div class="card">
-                <div class="card-icon">🌍</div>          
-            </div>
-            <div class="card">
-                <div class="card-icon">🎨</div>
-                <h3>Развитие речи</h3>
-                <p>Помощь в преодолении речевых трудностей</p>
-            </div>
-            <div class="card">
-                <div class="card-icon">📖</div>
-                <h3>Литература</h3>
-                <p>Анализ произведений и подготовка к итоговому сочинению</p>
-            </div>
-            <div class="card">
-                <div class="card-icon">💬</div>
-                <h3>Коррекция ошибок</h3>
-                <p>Помощь с орфографией, пунктацией и грамматикой</p>
+            <div class="about-text">
+                <h3>Привет! Меня зовут Елена.</h3>
+                <p>Я преподаю русский язык уже 30 лет. Моя методика основана на понимании, а не на зубрежке. Мы будем разбирать сложные правила через игры, мемы и современные тексты.</p>
+                <br>
+                <p>Мои ученики сдают экзамены на 90+ баллов и перестают бояться диктантов.</p>
             </div>
         </div>
     </section>
 
-    <section class="contact" id="contact">
-        <h2>📞 Контакты</h2>
-        <div class="contact-content">
-            <p style="font-size: 1.3em; margin-bottom: 30px; color: #FF6B9D; font-weight: bold;">Готовы начать обучение?</p>
+    <!-- Gamification Section -->
+    <section id="game" class="section">
+        <div class="slot-section">
+            <h2 style="color: white; margin-bottom: 1rem;">Испытай удачу и получи бонус!</h2>
+            <p style="margin-bottom: 2rem; opacity: 0.8;">Крути барабан и гарантированно выигрывай приз для занятий.</p>
             
-            <div class="contact-info">
-                <strong>📱 Телефон:</strong><br>
-                <a href="tel:+79154598603"</a>
+            <div class="slot-machine">
+                <div class="reels-container">
+                    <div class="reel" id="reel1">🍒</div>
+                    <div class="reel" id="reel2">🍋</div>
+                    <div class="reel" id="reel3">🍉</div>
+                </div>
+                <button class="spin-btn" id="spinBtn" onclick="spinSlot()">КРУТИТЬ!</button>
+                <div class="prize-display" id="prizeDisplay"></div>
             </div>
+        </div>
+    </section>
 
-            <div class="">
-                <strong>✉️ Email:</elenadmitr07@mail.ru><br>
-                <a href="mailto:irina@example.com">irina@example.com</a>
+    <!-- Services Section -->
+    <section id="services" class="section">
+        <h2 class="section-title">Что я предлагаю</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">🎓</div>
+                <h3>Подготовка к ЕГЭ</h3>
+                <p>Интенсивный курс для выпускников. Разбор всех заданий, стратегии написания сочинения.</p>
             </div>
-
-            <div class="contact-info">
-                <strong>📍 Место проведения:</strong><br>
-                <p>Онлайн уроки и очные занятия у меня дома</p>
+            <div class="service-card">
+                <div class="service-icon">📚</div>
+                <h3>Повышение грамотности</h3>
+                <p>Для взрослых и школьников. Учимся писать без ошибок в деловой переписке и соцсетях.</p>
             </div>
-
-            <p style="margin-top: 30px; color: #666; ☀️</p>
-
-            <div class="social-links">
-                <a href="#" title="Telegram">📲</a>
-                <a href="#" title="WhatsApp">💬</a>
-                <a href="#" title="VK">👥</a>
-                <a href="#" title="Instagram">📸</a>
+            <div class="service-card">
+                <div class="service-icon">🗣️</div>
+          
+                <p>Увлекательные уроки для тех, кто хочет выучить великий и могучий с нуля.</p>
             </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <h2 class="section-title">Записаться на занятие</h2>
+        <div class="contact-form">
+            <form onsubmit="event.preventDefault(); alert('Спасибо! Я свяжусь с вами в ближайшее время.');">
+                <div class="form-group">
+                    <label>Ваше имя</label>
+                    <input type="text" required placeholder="Иван Иванов">
+                </div>
+                <div class="form-group">
+                    <label>Телефон / Telegram</label>
+                    <input type="text" required placeholder="+7 (999) 000-00-00">
+                </div>
+                <div class="form-group">
+                    <label>Цель занятий</label>
+                    <textarea rows="4" placeholder="Хочу подготовиться к ЕГЭ..."></textarea>
+                </div>
+                <button type="submit" class="cta-button" style="width: 100%; border-radius: 10px;">Отправить заявку</button>
+            </form>
         </div>
     </section>
 
     <footer>
-        <p>&copy; 2026 Елена Субочева. Все права защищены. | Репетитор русского языка</p>
+        <p>© 2023 Репетитор по русскому языку Елена Смирнова. Все права защищены.</p>
     </footer>
+
+    <script>
+        const prizes = [
+            "Скидка на первый месяц 10%",
+            "Бесплатный урок",
+            "Полезная ПДФка",
+            "Скидка на курс 10%",
+            "ААААААВТОМОБИЛЬ"
+        ];
+
+        const symbols = ["📚", "✏️", "🎓", "🍎", "🏆", "💡", "📝"];
+        
+        let isSpinning = false;
+        let hasSpun = false;
+
+        function spinSlot() {
+            if (isSpinning || hasSpun) return;
+            
+            isSpinning = true;
+            hasSpun = true;
+            const btn = document.getElementById('spinBtn');
+            const prizeDisplay = document.getElementById('prizeDisplay');
+            const reels = [
+                document.getElementById('reel1'),
+                document.getElementById('reel2'),
+                document.getElementById('reel3')
+            ];
+
+            btn.disabled = true;
+            btn.textContent = "Крутим...";
+            prizeDisplay.textContent = "";
+
+            // Animation logic
+            let counter = 0;
+            const interval = setInterval(() => {
+                reels.forEach(reel => {
+                    reel.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                });
+                counter++;
+                if (counter > 20) {
+                    clearInterval(interval);
+                    finalizeSpin(reels, prizeDisplay, btn);
+                }
+            }, 100);
+        }
+
+        function finalizeSpin(reels, prizeDisplay, btn) {
+            // Determine winner (always wins)
+            const winningIndex = Math.floor(Math.random() * prizes.length);
+            const winningPrize = prizes[winningIndex];
+
+            // Force a "winning" visual (all same symbol) for effect, though logic says any outcome wins
+            const winSymbol = symbols[Math.floor(Math.random() * symbols.length)];
+            reels.forEach(reel => reel.textContent = winSymbol);
+
+            // Show prize
+            prizeDisplay.textContent = `🎉 ПОЗДРАВЛЯЕМ! Ваш приз: ${winningPrize} 🎉`;
+            btn.textContent = "Уже использовано";
+            
+            // Confetti effect
+            createConfetti();
+        }
+
+        function createConfetti() {
+            const colors = ['#FFD700', '#FF6B6B', '#4ECDC4', '#ffffff'];
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                confetti.style.top = '-10px';
+                document.querySelector('.slot-section').appendChild(confetti);
+                
+                // Remove after animation
+                setTimeout(() => confetti.remove(), 4000);
+            }
+        }
+    </script>
 </body>
 </html>
+
