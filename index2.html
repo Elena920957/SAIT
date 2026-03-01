@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мои Разработки | Витрина Товаров</title>
+    <style>
+        /* ========================================
+           ОСНОВНЫЕ СТИЛИ
+           Здесь можно менять цвета и шрифты
+           ======================================== */
+        :root {
+            --primary-color: #4f46e5;      /* Основной цвет (кнопки, акценты) */
+            --primary-hover: #4338ca;      /* Цвет кнопок при наведении */
+            --background: #f9fafb;         /* Цвет фона сайта */
+            --card-bg: #ffffff;            /* Цвет фона карточек */
+            --text-main: #1f2937;          /* Основной цвет текста */
+            --text-secondary: #6b7280;     /* Вторичный цвет текста */
+            --border-radius: 12px;         /* Скругление углов */
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--background);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* ========================================
+           ШАПКА САЙТА
+           ======================================== */
+        header {
+            background: var(--card-bg);
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* ========================================
+           СЕТКА ТОВАРОВ
+           Здесь настраивается расположение карточек
+           ======================================== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .products-grid {
+            display: grid;
+            /* Адаптивная сетка: карточки подстраиваются под ширину экрана */
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding-bottom: 3rem;
+        }
+
+        /* ========================================
+           КАРТОЧКА ТОВАРА
+           ======================================== */
+        .product-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background-color: #e5e7eb;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            /* Обрезаем текст после 3 строк */
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .buy-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .buy-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* ========================================
+           МОДАЛЬНОЕ ОКНО
+           ======================================== */
+        .modal-overlay {
+            display: none; /* Скрыто по умолчанию */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            z-index: 10;
+        }
+
+        .modal-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        /* ========================================
+           КАРУСЕЛЬ ИЗ ОБРАЖЕНИЙ
+           ======================================== */
+        .carousel-container {
+            position: relative;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        .carousel-images {
+            display: flex;
+            transition: transform 0.3s ease;
+        }
+
+        .carousel-image {
+            min-width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.8);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: background 0.3s;
+        }
+
+        .carousel-btn:hover {
+            background: white;
+        }
+
+        .carousel-btn.prev {
+            left: 10px;
+        }
+
+        .carousel-btn.next {
+            right: 10px;
+        }
+
+        .modal-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .modal-price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-buy-btn {
+            padding: 1rem 2rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .modal-buy-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* ========================================
+           АДАПТИВНОСТЬ ДЛЯ МОБИЛЬНЫХ
+           ======================================== */
+        @media (max-width: 768px) {
+            .modal-body {
+                grid-template-columns: 1fr;
+            }
+
+            .carousel-image {
+                height: 250px;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ========================================
+         ШАПКА САЙТА
+         Измените заголовок и описание здесь
+         ======================================== -->
+    <header>
+        <h1>Мои Разработки</h1>
+        <p>Уникальные цифровые продукты для ваших задач</p>
+    </header>
+
+    <div class="container">
+        <!-- ========================================
+             СЕТКА ТОВАРОВ
+             Копируйте блок .product-card для добавления новых товаров
+             ======================================== -->
+        <div class="products-grid">
+
+            <!-- ТОВАР 1 -->
+            <div class="product-card" data-product-id="1">
+                <!-- Замените src на ссылку вашей картинки -->
+                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500" alt="Товар 1" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Название товара 1</h3>
+                    <p class="product-description">Краткое описание товара. Расскажите здесь о главных преимуществах вашего продукта в 2-3 предложениях.</p>
+                    <div class="product-price">1 990 ₽</div>
+                    <button class="buy-btn" onclick="openModal(1)">Купить</button>
+                </div>
+            </div>
+
+            <!-- ТОВАР 2 -->
+            <div class="product-card" data-product-id="2">
+                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500" alt="Товар 2" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Название товара 2</h3>
+                    <p class="product-description">Краткое описание товара. Расскажите здесь о главных преимуществах вашего продукта в 2-3 предложениях.</p>
+                    <div class="product-price">2 490 ₽</div>
+                    <button class="buy-btn" onclick="openModal(2)">Купить</button>
+                </div>
+            </div>
+
+            <!-- ТОВАР 3 -->
+            <div class="product-card" data-product-id="3">
+                <img src="https://images.unsplash.com/photo-1555421689-491a97ff2040?w=500" alt="Товар 3" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Название товара 3</h3>
+                    <p class="product-description">Краткое описание товара. Расскажите здесь о главных преимуществах вашего продукта в 2-3 предложениях.</p>
+                    <div class="product-price">3 990 ₽</div>
+                    <button class="buy-btn" onclick="openModal(3)">Купить</button>
+                </div>
+            </div>
+
+            <!-- ТОВАР 4 -->
+            <div class="product-card" data-product-id="4">
+                <img src="https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?w=500" alt="Товар 4" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Название товара 4</h3>
+                    <p class="product-description">Краткое описание товара. Расскажите здесь о главных преимуществах вашего продукта в 2-3 предложениях.</p>
+                    <div class="product-price">4 990 ₽</div>
+                    <button class="buy-btn" onclick="openModal(4)">Купить</button>
+                </div>
+            </div>
+
+            <!-- ТОВАР 5 -->
+            <div class="product-card" data-product-id="5">
+                <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=500" alt="Товар 5" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Название товара 5</h3>
+                    <p class="product-description">Краткое описание товара. Расскажите здесь о главных преимуществах вашего продукта в 2-3 предложениях.</p>
+                    <div class="product-price">5 990 ₽</div>
+                    <button class="buy-btn" onclick="openModal(5)">Купить</button>
+                </div>
+            </div>
+
+            <!-- ТОВАР 6 -->
+            <div class="product-card" data-product-id="6">
+                <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=500" alt="Товар 6" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Название товара 6</h3>
+                    <p class="product-description">Краткое описание товара. Расскажите здесь о главных преимуществах вашего продукта в 2-3 предложениях.</p>
+                    <div class="product-price">6 990 ₽</div>
+                    <button class="buy-btn" onclick="openModal(6)">Купить</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ========================================
+         МОДАЛЬНОЕ ОКНО
+         Не меняйте структуру, данные подгружаются через JS
+         ======================================== -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div class="modal-body">
+                <!-- Карусель изображений -->
+                <div class="carousel-container">
+                    <div class="carousel-images" id="carouselImages">
+                        <!-- Изображения добавляются через JS -->
+                    </div>
+                    <button class="carousel-btn prev" onclick="moveCarousel(-1)">&#10094;</button>
+                    <button class="carousel-btn next" onclick="moveCarousel(1)">&#10095;</button>
+                </div>
+
+                <!-- Информация о товаре -->
+                <div class="modal-info">
+                    <h2 class="modal-title" id="modalTitle">Название товара</h2>
+                    <p class="modal-description" id="modalDescription">Полное описание товара</p>
+                    <div class="modal-price" id="modalPrice">0 ₽</div>
+                    <!-- В href вставьте вашу ссылку на оплату -->
+                    <a href="#" class="modal-buy-btn" id="modalBuyBtn" target="_blank">Купить сейчас</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* ========================================
+           ДАННЫЕ ТОВАРОВ
+           Заполните эту информацию своими товарами
+           ======================================== */
+        const products = {
+            1: {
+                title: "Название товара 1",
+                description: "Полное описание товара 1. Здесь вы можете подробно рассказать о всех преимуществах, функциях и особенностях вашего продукта. Укажите, кому подойдет этот товар и какие задачи он решает.",
+                price: "1 990 ₽",
+                // Добавьте ссылки на изображения для карусели
+                images: [
+                    "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800",
+                    "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800",
+                    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800"
+                ],
+                // Вставьте ссылку на оплату или контакт
+                buyLink: "https://your-payment-link.com/product1"
+            },
+            2: {
+                title: "Название товара 2",
+                description: "Полное описание товара 2. Здесь вы можете подробно рассказать о всех преимуществах, функциях и особенностях вашего продукта. Укажите, кому подойдет этот товар и какие задачи он решает.",
+                price: "2 490 ₽",
+                images: [
+                    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800",
+                    "https://images.unsplash.com/photo-1555421689-491a97ff2040?w=800"
+                ],
+                buyLink: "https://your-payment-link.com/product2"
+            },
+            3: {
+                title: "Название товара 3",
+                description: "Полное описание товара 3. Здесь вы можете подробно рассказать о всех преимуществах, функциях и особенностях вашего продукта. Укажите, кому подойдет этот товар и какие задачи он решает.",
+                price: "3 990 ₽",
+                images: [
+                    "https://images.unsplash.com/photo-1555421689-491a97ff2040?w=800",
+                    "https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?w=800"
+                ],
+                buyLink: "https://your-payment-link.com/product3"
+            },
+            4: {
+                title: "Название товара 4",
+                description: "Полное описание товара 4. Здесь вы можете подробно рассказать о всех преимуществах, функциях и особенностях вашего продукта. Укажите, кому подойдет этот товар и какие задачи он решает.",
+                price: "4 990 ₽",
+                images: [
+                    "https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?w=800",
+                    "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800"
+                ],
+                buyLink: "https://your-payment-link.com/product4"
+            },
+            5: {
+                title: "Название товара 5",
+                description: "Полное описание товара 5. Здесь вы можете подробно рассказать о всех преимуществах, функциях и особенностях вашего продукта. Укажите, кому подойдет этот товар и какие задачи он решает.",
+                price: "5 990 ₽",
+                images: [
+                    "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800",
+                    "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800"
+                ],
+                buyLink: "https://your-payment-link.com/product5"
+            },
+            6: {
+                title: "Название товара 6",
+                description: "Полное описание товара 6. Здесь вы можете подробно рассказать о всех преимуществах, функциях и особенностях вашего продукта. Укажите, кому подойдет этот товар и какие задачи он решает.",
+                price: "6 990 ₽",
+                images: [
+                    "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800",
+                    "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800"
+                ],
+                buyLink: "https://your-payment-link.com/product6"
+            }
+        };
+
+        // Текущий товар и позиция карусели
+        let currentProductId = null;
+        let currentImageIndex = 0;
+
+        /* ========================================
+           ФУНКЦИИ МОДАЛЬНОГО ОКНА
+           ======================================== */
+        
+        // Открыть модальное окно
+        function openModal(productId) {
+            currentProductId = productId;
+            currentImageIndex = 0;
+            const product = products[productId];
+
+            // Заполняем данные
+            document.getElementById('modalTitle').textContent = product.title;
+            document.getElementById('modalDescription').textContent = product.description;
+            document.getElementById('modalPrice').textContent = product.price;
+            document.getElementById('modalBuyBtn').href = product.buyLink;
+
+            // Заполняем карусель
+            const carousel = document.getElementById('carouselImages');
+            carousel.innerHTML = '';
+            product.images.forEach((img, index) => {
+                const imageElement = document.createElement('img');
+                imageElement.src = img;
+                imageElement.alt = product.title;
+                imageElement.className = 'carousel-image';
+                carousel.appendChild(imageElement);
+            });
+
+            // Показываем модальное окно
+            document.getElementById('modalOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden'; // Блокируем прокрутку страницы
+        }
+
+        // Закрыть модальное окно
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+            document.body.style.overflow = 'auto';
+            currentProductId = null;
+        }
+
+        // Закрытие по клику вне контента
+        document.getElementById('modalOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        /* ========================================
+           ФУНКЦИИ КАРУСЕЛИ
+           ======================================== */
+        
+        function moveCarousel(direction) {
+            if (!currentProductId) return;
+            
+            const product = products[currentProductId];
+            const totalImages = product.images.length;
+            
+            currentImageIndex += direction;
+            
+            // Циклическая прокрутка
+            if (currentImageIndex < 0) {
+                currentImageIndex = totalImages - 1;
+            } else if (currentImageIndex >= totalImages) {
+                currentImageIndex = 0;
+            }
+
+            // Сдвигаем карусель
+            const carousel = document.getElementById('carouselImages');
+            carousel.style.transform = `translateX(-${currentImageIndex * 100}%)`;
+        }
+
+        // Закрытие по Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
+
